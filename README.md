@@ -87,6 +87,27 @@ By default, browsers block one website from talking to another. In `backend/src/
 Unlike MongoDB or MySQL which require a separate server, this project uses **SQLite**. It stores everything in a single file called `ebook.db` inside the backend folder. This makes the project extremely portable.
 
 ---
+## 📸 Screenshots
+
+### 🏠 Home Page
+![Home](./screenshots/home.jpeg)
+
+### 🧑‍💻 User Dashboard
+![User Dashboard](./screenshots/user-dashboard.jpeg)
+
+### 📊 Admin Dashboard
+![Admin Dashboard](./screenshots/admin-dashboard.jpeg)
+
+### ⚙️ Admin Panel
+![Admin Panel](./screenshots/admin.jpeg)
+
+### 🔐 Admin Login
+![Admin Login](./screenshots/admin-log.jpeg)
+
+### 📚 Borrow Page
+![Borrow Page](./screenshots/borrow-page.jpeg)
+
+---
 
 ## 🚀 Getting Started
 
