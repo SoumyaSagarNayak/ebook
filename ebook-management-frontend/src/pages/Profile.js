@@ -124,7 +124,7 @@ export default function Profile() {
           </div>
 
           {/* Borrow Stats */}
-          {stats && (
+          {stats && profile.role !== 'admin' && (
             <div className="profile-section">
               <h3 style={{ fontSize:16, color:'var(--accent)', marginBottom:16 }}>Borrow Statistics</h3>
               <div className="stats-grid">
