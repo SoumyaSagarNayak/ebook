@@ -32,7 +32,10 @@ const app = express();
 
 // CORS: allows your React frontend (localhost:3000) to talk to this backend (localhost:5000)
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:5173'],
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    return callback(null, true); // Allow any requesting origin dynamically to support session credentials
+  },
   credentials: true
 }));
 
