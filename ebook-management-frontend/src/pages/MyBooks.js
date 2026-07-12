@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getMyHistory, returnBook } from '../services/api';
+import { getMyHistory, getAllBorrows, returnBook } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
 export default function MyBooks() {
@@ -11,9 +11,11 @@ export default function MyBooks() {
   const [returning, setReturning] = useState(null);
   const [message, setMessage]     = useState('');
 
+  const isAdmin = user?.role === 'admin';
+
   const fetchHistory = async () => {
     try {
-      const res = await getMyHistory();
+      const res = isAdmin ? await getAllBorrows() : await getMyHistory();
       setRecords(res.data.records);
     } catch(err) { console.error(err); }
     finally { setLoading(false); }
@@ -61,8 +63,8 @@ export default function MyBooks() {
   return (
     <div className="container">
       <div className="page-header">
-        <h1>My Books</h1>
-        <p>Your borrow history</p>
+        <h1>{isAdmin ? 'Borrowed Books' : 'My Books'}</h1>
+        <p>{isAdmin ? 'Manage all active and past library borrows' : 'Your borrow history'}</p>
       </div>
 
       {message && (
@@ -72,7 +74,7 @@ export default function MyBooks() {
       )}
 
       <h2 style={{ fontSize: 18, marginBottom: 16, color: 'var(--accent)' }}>
-        Currently Borrowed ({active.length})
+        {isAdmin ? 'Active Borrows' : 'Currently Borrowed'} ({active.length})
       </h2>
 
       {loading ? (
@@ -80,16 +82,27 @@ export default function MyBooks() {
       ) : active.length === 0 ? (
         <div className="empty-state">
           <div className="empty-icon">📚</div>
-          <h3>No active borrows</h3>
-          <p><span style={{ color: 'var(--accent)', cursor: 'pointer' }} onClick={() => navigate('/')}>Browse the library</span></p>
+          <h3>{isAdmin ? 'No active borrows in the system' : 'No active borrows'}</h3>
+          <p>
+            {isAdmin ? (
+              <span style={{ color: 'var(--accent)', cursor: 'pointer' }} onClick={() => navigate('/admin')}>
+                Manage library in Admin Dashboard
+              </span>
+            ) : (
+              <span style={{ color: 'var(--accent)', cursor: 'pointer' }} onClick={() => navigate('/')}>
+                Browse the library
+              </span>
+            )}
+          </p>
         </div>
       ) : (
         <div className="table-wrap" style={{ marginBottom: 40 }}>
           <table>
             <thead>
               <tr>
+                {isAdmin && <th>User</th>}
                 <th>Book</th>
-                <th>Author</th>
+                {!isAdmin && <th>Author</th>}
                 <th>Due Date</th>
                 <th>Status</th>
                 <th>Action</th>
@@ -100,8 +113,15 @@ export default function MyBooks() {
                 const info = getDueDateInfo(r.due_date);
                 return (
                   <tr key={r.id}>
-                    <td><strong>{r.title}</strong></td>
-                    <td style={{ color: 'var(--muted)' }}>{r.author}</td>
+                    {isAdmin && (
+                      <td>
+                        <strong>{r.user_name}</strong>
+                        <br />
+                        <span style={{ fontSize: 12, color: 'var(--muted)' }}>{r.user_email}</span>
+                      </td>
+                    )}
+                    <td><strong>{isAdmin ? r.book_title : r.title}</strong></td>
+                    {!isAdmin && <td style={{ color: 'var(--muted)' }}>{r.author}</td>}
                     <td>{new Date(r.due_date).toLocaleDateString()}</td>
                     <td>
                       <span className={`badge ${info.overdue ? 'badge-danger' : 'badge-success'}`}>
@@ -139,6 +159,7 @@ export default function MyBooks() {
             <table>
               <thead>
                 <tr>
+                  {isAdmin && <th>User</th>}
                   <th>Book</th>
                   <th>Returned</th>
                   <th>Fine Paid</th>
@@ -148,7 +169,14 @@ export default function MyBooks() {
               <tbody>
                 {returned.map(r => (
                   <tr key={r.id}>
-                    <td><strong>{r.title}</strong></td>
+                    {isAdmin && (
+                      <td>
+                        <strong>{r.user_name}</strong>
+                        <br />
+                        <span style={{ fontSize: 12, color: 'var(--muted)' }}>{r.user_email}</span>
+                      </td>
+                    )}
+                    <td><strong>{isAdmin ? r.book_title : r.title}</strong></td>
                     <td style={{ color: 'var(--muted)' }}>
                       {r.returned_at ? new Date(r.returned_at).toLocaleDateString() : '—'}
                     </td>

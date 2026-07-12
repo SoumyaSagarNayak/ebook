@@ -18,7 +18,9 @@ export default function Navbar() {
         {user ? (
           <>
             <button className={isActive('/')}          onClick={() => navigate('/')}>Library</button>
-            <button className={isActive('/my-books')}  onClick={() => navigate('/my-books')}>My Books</button>
+            <button className={isActive('/my-books')}  onClick={() => navigate('/my-books')}>
+              {isAdmin ? 'Borrowed' : 'My Books'}
+            </button>
             {isAdmin && (
               <button className={isActive('/admin')} onClick={() => navigate('/admin')}>
                 Admin <span className="nav-badge">A</span>

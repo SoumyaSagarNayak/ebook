@@ -148,13 +148,15 @@ export default function Admin() {
                         <td><span className="badge badge-info">{b.category_name||'-'}</span></td>
                         <td>{b.total_copies}</td>
                         <td><span className={`badge ${b.available>0?'badge-success':'badge-danger'}`}>{b.available}</span></td>
-                        <td style={{display:'flex',gap:6}}>
-                          <button className="btn btn-sm" 
-                            style={{background:'var(--accent)',color:'#000'}}
-                            onClick={() => { setEditBook({...b, file:null}); setShowEditModal(true); }}>
-                            Edit
-                          </button>
-                          <button className="btn btn-danger btn-sm" onClick={() => handleDeleteBook(b.id, b.title)}>Delete</button>
+                        <td>
+                          <div style={{display:'flex',gap:6,alignItems:'center'}}>
+                            <button className="btn btn-sm" 
+                              style={{background:'var(--accent)',color:'#000'}}
+                              onClick={() => { setEditBook({...b, file:null}); setShowEditModal(true); }}>
+                              Edit
+                            </button>
+                            <button className="btn btn-danger btn-sm" onClick={() => handleDeleteBook(b.id, b.title)}>Delete</button>
+                          </div>
                         </td>
                       </tr>
                     ))}

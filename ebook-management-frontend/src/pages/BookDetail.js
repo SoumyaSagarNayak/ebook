@@ -58,6 +58,10 @@ export default function BookDetail() {
     finally { setBorrowing(false); }
   };
 
+  const handleReadBookAdmin = () => {
+    alert(`Opening "${book.title}" in reader mode. As an administrator, you have direct reading access to any book without needing to borrow it.`);
+  };
+
   const handleReviewSubmit = async () => {
     if (!userRating) { setReviewMsg('Please select a star rating.'); return; }
     setSubmitting(true); setReviewMsg('');
@@ -139,10 +143,16 @@ export default function BookDetail() {
           {error   && <div className="alert alert-error">{error}</div>}
 
           {user ? (
-            <button className="btn btn-primary" onClick={handleBorrow}
-              disabled={borrowing || book.available <= 0}>
-              {borrowing ? 'Borrowing...' : book.available > 0 ? '📖 Borrow this book' : 'Not Available'}
-            </button>
+            user.role === 'admin' ? (
+              <button className="btn btn-primary" onClick={handleReadBookAdmin}>
+                📖 Read Book (Admin Direct Access)
+              </button>
+            ) : (
+              <button className="btn btn-primary" onClick={handleBorrow}
+                disabled={borrowing || book.available <= 0}>
+                {borrowing ? 'Borrowing...' : book.available > 0 ? '📖 Borrow this book' : 'Not Available'}
+              </button>
+            )
           ) : (
             <button className="btn btn-primary" onClick={() => navigate('/login')}>
               Sign in to borrow
