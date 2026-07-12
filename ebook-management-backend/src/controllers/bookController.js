@@ -73,14 +73,10 @@ function addBook(req, res) {
   const copies = parseInt(total_copies) || 1;
   const db = getDb();
 
-  // If a file was uploaded, multer puts its path in req.file
-  const file_path   = req.file ? req.file.path.replace(/\\/g, '/') : null;
-  const cover_path  = req.body.cover_path || null;
-
   const result = db.prepare(`
-    INSERT INTO books (title, author, description, category_id, file_path, cover_path, total_copies, available)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-  `).run(title, author, description || '', category_id || null, file_path, cover_path, copies, copies);
+    INSERT INTO books (title, author, description, category_id, total_copies, available)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `).run(title, author, description || '', category_id ? parseInt(category_id) : null, copies, copies);
 
   res.status(201).json({
     message: 'Book added successfully!',

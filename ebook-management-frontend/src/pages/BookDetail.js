@@ -3,27 +3,27 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { getBookById, borrowBook, getBookReviews, addReview, deleteReview } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
-const EMOJIS = ['📘','📗','📙','📕','📓','📔','📒','📃'];
+const EMOJIS = ['📘', '📗', '📙', '📕', '📓', '📔', '📒', '📃'];
 
 export default function BookDetail() {
   const { id } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const [book, setBook]           = useState(null);
-  const [loading, setLoading]     = useState(true);
+  const [book, setBook] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [borrowing, setBorrowing] = useState(false);
-  const [message, setMessage]     = useState('');
-  const [error, setError]         = useState('');
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
 
   // Reviews state
-  const [reviews, setReviews]         = useState([]);
-  const [avgRating, setAvgRating]     = useState(null);
-  const [userRating, setUserRating]   = useState(0);
+  const [reviews, setReviews] = useState([]);
+  const [avgRating, setAvgRating] = useState(null);
+  const [userRating, setUserRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
-  const [reviewText, setReviewText]   = useState('');
-  const [submitting, setSubmitting]   = useState(false);
-  const [reviewMsg, setReviewMsg]     = useState('');
+  const [reviewText, setReviewText] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [reviewMsg, setReviewMsg] = useState('');
 
   useEffect(() => {
     getBookById(id)
@@ -43,7 +43,7 @@ export default function BookDetail() {
         const mine = res.data.reviews.find(r => r.user_id === user.id);
         if (mine) { setUserRating(mine.rating); setReviewText(mine.review_text); }
       }
-    } catch(err) { console.error(err); }
+    } catch (err) { console.error(err); }
   };
 
   const handleBorrow = async () => {
@@ -54,7 +54,7 @@ export default function BookDetail() {
       setMessage(`Borrowed! Due: ${res.data.due_date}`);
       const updated = await getBookById(id);
       setBook(updated.data.book);
-    } catch(err) { setError(err.response?.data?.error || 'Could not borrow.'); }
+    } catch (err) { setError(err.response?.data?.error || 'Could not borrow.'); }
     finally { setBorrowing(false); }
   };
 
@@ -69,7 +69,7 @@ export default function BookDetail() {
       await addReview({ book_id: id, rating: userRating, review_text: reviewText });
       setReviewMsg('Review submitted!');
       fetchReviews();
-    } catch(err) {
+    } catch (err) {
       setReviewMsg(err.response?.data?.error || 'Could not submit review.');
     } finally { setSubmitting(false); }
   };
@@ -78,11 +78,11 @@ export default function BookDetail() {
     try {
       await deleteReview(reviewId);
       fetchReviews();
-    } catch(err) { console.error(err); }
+    } catch (err) { console.error(err); }
   };
 
   const renderStars = (rating, interactive = false) => {
-    return [1,2,3,4,5].map(star => (
+    return [1, 2, 3, 4, 5].map(star => (
       <span
         key={star}
         style={{
@@ -100,7 +100,7 @@ export default function BookDetail() {
   };
 
   if (loading) return <div className="loading">Loading...</div>;
-  if (!book)   return null;
+  if (!book) return null;
 
   return (
     <div className="container">
@@ -112,7 +112,7 @@ export default function BookDetail() {
         <div className="book-detail-cover">
           {book.file_path
             ? <img src={`http://localhost:5000/${book.file_path}`} alt={book.title}
-                style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'top', borderRadius: 8 }} />
+              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', borderRadius: 8 }} />
             : EMOJIS[book.id % EMOJIS.length]
           }
         </div>
@@ -123,10 +123,10 @@ export default function BookDetail() {
 
           {/* Average rating display */}
           {avgRating && (
-            <div style={{ display:'flex', alignItems:'center', gap: 8, margin: '8px 0' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, margin: '8px 0' }}>
               <span style={{ fontSize: 20 }}>{renderStars(Math.round(avgRating))}</span>
-              <span style={{ color:'var(--accent)', fontWeight:600 }}>{avgRating}</span>
-              <span style={{ color:'var(--muted)', fontSize:13 }}>({reviews.length} review{reviews.length !== 1 ? 's' : ''})</span>
+              <span style={{ color: 'var(--accent)', fontWeight: 600 }}>{avgRating}</span>
+              <span style={{ color: 'var(--muted)', fontSize: 13 }}>({reviews.length} review{reviews.length !== 1 ? 's' : ''})</span>
             </div>
           )}
 
@@ -140,12 +140,12 @@ export default function BookDetail() {
           <p className="book-detail-desc">{book.description || 'No description available.'}</p>
 
           {message && <div className="alert alert-success">{message}</div>}
-          {error   && <div className="alert alert-error">{error}</div>}
+          {error && <div className="alert alert-error">{error}</div>}
 
           {user ? (
             user.role === 'admin' ? (
               <button className="btn btn-primary" onClick={handleReadBookAdmin}>
-                📖 Read Book (Admin Direct Access)
+                📖 Read Book
               </button>
             ) : (
               <button className="btn btn-primary" onClick={handleBorrow}
@@ -174,8 +174,8 @@ export default function BookDetail() {
             <div style={{ marginBottom: 12 }}>
               {renderStars(userRating, true)}
               {userRating > 0 && (
-                <span style={{ marginLeft: 8, color:'var(--muted)', fontSize:13 }}>
-                  {['','Poor','Fair','Good','Great','Excellent'][userRating]}
+                <span style={{ marginLeft: 8, color: 'var(--muted)', fontSize: 13 }}>
+                  {['', 'Poor', 'Fair', 'Good', 'Great', 'Excellent'][userRating]}
                 </span>
               )}
             </div>
@@ -200,7 +200,7 @@ export default function BookDetail() {
 
         {/* Reviews list */}
         {reviews.length === 0 ? (
-          <div style={{ color:'var(--muted)', padding:'20px 0', fontSize:14 }}>
+          <div style={{ color: 'var(--muted)', padding: '20px 0', fontSize: 14 }}>
             No reviews yet. Be the first to review!
           </div>
         ) : (
@@ -208,28 +208,30 @@ export default function BookDetail() {
             {reviews.map(r => (
               <div key={r.id} className="review-card">
                 <div className="review-header">
-                  <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                     <div className="review-avatar">{r.user_name?.[0]?.toUpperCase()}</div>
                     <div>
-                      <div style={{ fontWeight:600, fontSize:14 }}>{r.user_name}</div>
-                      <div style={{ color:'var(--muted)', fontSize:12 }}>
+                      <div style={{ fontWeight: 600, fontSize: 14 }}>{r.user_name}</div>
+                      <div style={{ color: 'var(--muted)', fontSize: 12 }}>
                         {new Date(r.created_at).toLocaleDateString()}
                       </div>
                     </div>
                   </div>
-                  <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <span>{renderStars(r.rating)}</span>
                     {(user?.id === r.user_id || user?.role === 'admin') && (
                       <button
                         onClick={() => handleDeleteReview(r.id)}
-                        style={{ background:'none', border:'none', color:'var(--danger)',
-                          cursor:'pointer', fontSize:12, padding:'2px 6px' }}
+                        style={{
+                          background: 'none', border: 'none', color: 'var(--danger)',
+                          cursor: 'pointer', fontSize: 12, padding: '2px 6px'
+                        }}
                       >✕</button>
                     )}
                   </div>
                 </div>
                 {r.review_text && (
-                  <p style={{ color:'var(--text)', fontSize:14, lineHeight:1.6, marginTop:8 }}>
+                  <p style={{ color: 'var(--text)', fontSize: 14, lineHeight: 1.6, marginTop: 8 }}>
                     {r.review_text}
                   </p>
                 )}

@@ -10,13 +10,9 @@ export const loginUser      = (data)     => API.post('/auth/login', data);
 export const registerUser   = (data)     => API.post('/auth/register', data);
 export const getAllBooks     = (params)   => API.get('/books', { params });
 export const getBookById    = (id)       => API.get(`/books/${id}`);
-export const addBook        = (data)     => API.post('/books', data, {
-  headers: { 'Content-Type': 'multipart/form-data' }
-});
-export const deleteBook  = (id)     => API.delete(`/books/${id}`);
-export const updateBook  = (id, data) => API.put(`/books/${id}`, data, {
-  headers: { 'Content-Type': 'multipart/form-data' }
-});
+export const addBook        = (data)     => API.post('/books', data);
+export const deleteBook     = (id)       => API.delete(`/books/${id}`);
+export const updateBook     = (id, data) => API.put(`/books/${id}`, data);
 export const borrowBook     = (book_id)  => API.post('/borrow', { book_id });
 export const returnBook     = (id)       => API.put(`/borrow/${id}/return`);
 export const getMyHistory   = ()         => API.get('/borrow/my-history');

@@ -16,7 +16,7 @@ export default function Admin() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [editBook, setEditBook]     = useState(null);
   const [message, setMessage]       = useState('');
-  const [newBook, setNewBook]       = useState({ title:'', author:'', description:'', category_id:'', total_copies:1, file:null });
+  const [newBook, setNewBook]       = useState({ title:'', author:'', description:'', category_id:'', total_copies:1 });
   const [newCat, setNewCat]         = useState('');
 
   useEffect(() => {
@@ -38,17 +38,16 @@ export default function Admin() {
   const handleAddBook = async (e) => {
     e.preventDefault();
     try {
-      const formData = new FormData();
-      formData.append('title', newBook.title);
-      formData.append('author', newBook.author);
-      formData.append('description', newBook.description);
-      formData.append('category_id', newBook.category_id);
-      formData.append('total_copies', newBook.total_copies);
-      if (newBook.file) formData.append('file', newBook.file);
-      await addBook(formData);
+      await addBook({
+        title: newBook.title,
+        author: newBook.author,
+        description: newBook.description,
+        category_id: newBook.category_id,
+        total_copies: newBook.total_copies
+      });
       setMessage('Book added successfully!');
       setShowModal(false);
-      setNewBook({ title:'', author:'', description:'', category_id:'', total_copies:1, file:null });
+      setNewBook({ title:'', author:'', description:'', category_id:'', total_copies:1 });
       loadData();
     } catch(err) { setMessage(err.response?.data?.error || 'Failed to add book.'); }
   };
@@ -56,14 +55,13 @@ export default function Admin() {
   const handleEditBook = async (e) => {
     e.preventDefault();
     try {
-      const formData = new FormData();
-      formData.append('title', editBook.title);
-      formData.append('author', editBook.author);
-      formData.append('description', editBook.description || '');
-      formData.append('category_id', editBook.category_id || '');
-      formData.append('total_copies', editBook.total_copies);
-      if (editBook.file) formData.append('file', editBook.file);
-      await updateBook(editBook.id, formData);
+      await updateBook(editBook.id, {
+        title: editBook.title,
+        author: editBook.author,
+        description: editBook.description || '',
+        category_id: editBook.category_id || '',
+        total_copies: editBook.total_copies
+      });
       setMessage('Book updated successfully!');
       setShowEditModal(false);
       setEditBook(null);
@@ -152,7 +150,7 @@ export default function Admin() {
                           <div style={{display:'flex',gap:6,alignItems:'center'}}>
                             <button className="btn btn-sm" 
                               style={{background:'var(--accent)',color:'#000'}}
-                              onClick={() => { setEditBook({...b, file:null}); setShowEditModal(true); }}>
+                              onClick={() => { setEditBook(b); setShowEditModal(true); }}>
                               Edit
                             </button>
                             <button className="btn btn-danger btn-sm" onClick={() => handleDeleteBook(b.id, b.title)}>Delete</button>
@@ -234,12 +232,6 @@ export default function Admin() {
               <div className="form-group"><label>Total Copies</label>
                 <input type="number" min={1} value={newBook.total_copies} onChange={e => setNewBook({...newBook,total_copies:e.target.value})}/>
               </div>
-              <div className="form-group"><label>Book Cover Image</label>
-                <input type="file" accept="image/*"
-                  onChange={e => setNewBook({...newBook, file: e.target.files[0]})}
-                  style={{color:'var(--text)',background:'var(--bg3)',border:'1px solid var(--border)',padding:'8px',borderRadius:'6px',width:'100%'}}
-                />
-              </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-ghost" onClick={() => setShowModal(false)}>Cancel</button>
                 <button type="submit" className="btn btn-primary">Add Book</button>
@@ -254,13 +246,6 @@ export default function Admin() {
         <div className="modal-overlay" onClick={() => setShowEditModal(false)}>
           <div className="modal" onClick={e => e.stopPropagation()}>
             <h2>Edit Book</h2>
-            {editBook.file_path && (
-              <div style={{marginBottom:12,textAlign:'center'}}>
-                <img src={`http://localhost:5000/${editBook.file_path}`} alt="current cover"
-                  style={{width:80,height:110,objectFit:'cover',borderRadius:6,border:'2px solid var(--border)'}}/>
-                <p style={{fontSize:12,color:'var(--muted)',marginTop:4}}>Current cover</p>
-              </div>
-            )}
             <form onSubmit={handleEditBook}>
               <div className="form-group"><label>Title *</label>
                 <input required value={editBook.title} onChange={e => setEditBook({...editBook,title:e.target.value})}/>
@@ -279,12 +264,6 @@ export default function Admin() {
               </div>
               <div className="form-group"><label>Total Copies</label>
                 <input type="number" min={1} value={editBook.total_copies} onChange={e => setEditBook({...editBook,total_copies:e.target.value})}/>
-              </div>
-              <div className="form-group"><label>New Cover Image (optional)</label>
-                <input type="file" accept="image/*"
-                  onChange={e => setEditBook({...editBook, file: e.target.files[0]})}
-                  style={{color:'var(--text)',background:'var(--bg3)',border:'1px solid var(--border)',padding:'8px',borderRadius:'6px',width:'100%'}}
-                />
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-ghost" onClick={() => setShowEditModal(false)}>Cancel</button>
