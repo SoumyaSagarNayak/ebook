@@ -1,0 +1,73 @@
+📚 BOOKVAULT - USER GUIDE & MANUAL
+
+This guide explains how to install, run, and use the E-Book Management System locally.
+
+========================================================================
+🚀 HOW TO RUN THE APP LOCALLY NOW
+========================================================================
+
+You can now manage the entire application from the root folder without needing to navigate into separate frontend and backend directories.
+
+1. Install all dependencies across both frontend and backend:
+   -----------------------------------------------------------
+   Command (run from root directory):
+   npm run install:all
+
+2. Start both servers concurrently:
+   ---------------------------------
+   Command (run from root directory):
+   npm run dev
+
+   * The Backend API will start on: http://localhost:5000
+   * The Frontend React app will start and open automatically on: http://localhost:3000
+
+========================================================================
+🔑 EASY AUTHENTICATION & LOGIN FLOW
+========================================================================
+
+Strict password hashing (Bcrypt) has been removed. You can now log in with ANY credentials:
+* Enter ANY email or simple username.
+* Enter ANY password (password validation is bypassed).
+
+Dynamic Role Mapping:
+---------------------
+* Admin access is granted if the email/username you type contains the word "admin" (e.g., "admin", "admin_helper", "admin@ebook.com").
+* Member access is granted for all other inputs (e.g., "john", "member", "guest@example.com").
+
+*If the user ID does not exist in the database, it will be automatically registered on the fly.*
+
+Demo Accounts:
+--------------
+* Administrator: admin@ebook.com (Password: admin123)
+* Normal Member: john@example.com (Password: user123)
+
+========================================================================
+💻 ADMINISTRATOR FEATURES
+========================================================================
+
+1. Perfect Layout Alignment:
+   -------------------------
+   The Books Table in the Admin Dashboard is perfectly aligned, ensuring actions (Edit & Delete) display cleanly within each row.
+
+2. Admin Direct Read Access:
+   --------------------------
+   Administrators do not need to borrow books. On any book details page, the "Borrow" button is replaced by a "Read Book (Admin Direct Access)" button. Clicking it provides instant reading access.
+
+3. Global Borrowed Log ("Borrowed" Tab):
+   ---------------------------------------
+   The "My Books" tab dynamically converts to "Borrowed" for administrators. Clicking it displays a global audit log of all active and returned borrow records across the entire library, including:
+   * Who borrowed the book (Name & Email).
+   * Title of the book.
+   * Due date and overdue status.
+   * Option to click "Return" to check the book back in on behalf of the user.
+
+========================================================================
+📖 MEMBER FEATURES
+========================================================================
+
+1. "My Books" Tab:
+   ----------------
+   Displays the member's personal borrow history, including due dates, active count, and estimated overdue fine calculations (₹5/day).
+2. Book Borrowing:
+   ----------------
+   Allows members to borrow active book copies for up to 14 days and return them.

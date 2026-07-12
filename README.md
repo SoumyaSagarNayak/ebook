@@ -32,7 +32,6 @@ graph LR
 - **Framework:** Express.js
 - **Database:** SQLite (via `better-sqlite3`)
 - **Authentication:** JWT (JSON Web Tokens)
-- **Password Hashing:** Bcrypt.js
 - **File Uploads:** Multer
 
 ---
@@ -111,14 +110,25 @@ Unlike MongoDB or MySQL which require a separate server, this project uses **SQL
 
 ## 🚀 Getting Started
 
-### Backend Setup
-1. `cd ebook-management-backend`
-2. `npm install`
-3. Create `.env` file with `JWT_SECRET=your_secret`
-4. `mkdir uploads`
-5. `npm run dev`
+You can now easily install dependencies and run both servers from the root folder of the project using npm workspaces.
 
-### Frontend Setup
-1. `cd ebook-management-frontend`
-2. `npm install`
-3. `npm start`
+### 1. Install Dependencies
+Install all modules for both the frontend and backend in one command from the root:
+```bash
+npm run install:all
+```
+
+### 2. Configure Environment (Backend)
+Check that the `.env` file exists in `ebook-management-backend/` (it is pre-configured with a default secret):
+```env
+PORT=5000
+JWT_SECRET=super_secret_key_123
+```
+
+### 3. Run the App
+Start both the Express server and the React frontend concurrently:
+```bash
+npm run dev
+```
+* The frontend will load automatically at `http://localhost:3000`.
+* The backend API server will run at `http://localhost:5000`.
