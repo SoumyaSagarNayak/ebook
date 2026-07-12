@@ -1,0 +1,19 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+.env.local
+
+# Databases
+*.db
+*.db-shm
+*.db-wal
+
+# User Uploads
+uploads/
+ebook-management-backend/uploads/
+
+# OS files
+.DS_Store
+Thumbs.db
