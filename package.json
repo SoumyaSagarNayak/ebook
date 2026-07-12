@@ -1,0 +1,19 @@
+{
+  "name": "ebook-management-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Monorepo for the Full-Stack E-Book Management System",
+  "workspaces": [
+    "ebook-management-backend",
+    "ebook-management-frontend"
+  ],
+  "scripts": {
+    "install:all": "npm install --workspaces --if-present",
+    "dev:backend": "npm run dev --workspace=ebook-management-backend",
+    "start:frontend": "npm run start --workspace=ebook-frontend",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run start:frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
