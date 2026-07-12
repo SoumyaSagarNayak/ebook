@@ -114,6 +114,12 @@ function initializeDatabase() {
       { title: 'Clean Code', author: 'Robert C. Martin', description: 'A guide to writing readable, maintainable code.', category_id: 4, total_copies: 5, available: 5 },
       { title: 'Sapiens', author: 'Yuval Noah Harari', description: 'A brief history of humankind.', category_id: 3, total_copies: 4, available: 4 },
       { title: 'Atomic Habits', author: 'James Clear', description: 'Tiny changes, remarkable results.', category_id: 5, total_copies: 3, available: 3 },
+      { title: 'To Kill a Mockingbird', author: 'Harper Lee', description: 'A gripping tragedy exploring prejudice and justice in the American South.', category_id: 1, total_copies: 4, available: 4 },
+      { title: 'Cosmos', author: 'Carl Sagan', description: 'A fascinating journey through science, history, and philosophy.', category_id: 2, total_copies: 3, available: 3 },
+      { title: 'The Silk Roads', author: 'Peter Frankopan', description: 'A major reassessment of world history, focusing on the regions of Central Asia.', category_id: 3, total_copies: 2, available: 2 },
+      { title: 'Introduction to Algorithms', author: 'Thomas H. Cormen', description: 'A comprehensive and standard guide to computer algorithms.', category_id: 4, total_copies: 3, available: 3 },
+      { title: 'The 7 Habits of Highly Effective People', author: 'Stephen R. Covey', description: 'A holistic, integrated, principle-centered approach for solving personal and professional problems.', category_id: 5, total_copies: 4, available: 4 },
+      { title: 'Steve Jobs', author: 'Walter Isaacson', description: 'The exclusive biography of Apple co-founder Steve Jobs, based on hundreds of interviews.', category_id: 6, total_copies: 3, available: 3 },
     ];
     const insertBook = db.prepare(`
       INSERT INTO books (title, author, description, category_id, total_copies, available)
