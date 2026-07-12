@@ -7,7 +7,14 @@ require('dotenv').config(); // Load .env variables first
 const express  = require('express');
 const cors     = require('cors');
 const path     = require('path');
+const fs       = require('fs');
 const { initializeDatabase } = require('./db/database');
+
+// Ensure uploads directory exists (critical for Multer file uploads on fresh clones/servers)
+const uploadsDir = path.join(__dirname, '../uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
 
 // Import all route files
 const authRoutes     = require('./routes/authRoutes');

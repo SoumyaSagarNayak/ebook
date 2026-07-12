@@ -74,7 +74,7 @@ function addBook(req, res) {
   const db = getDb();
 
   // If a file was uploaded, multer puts its path in req.file
-  const file_path   = req.file ? req.file.path : null;
+  const file_path   = req.file ? req.file.path.replace(/\\/g, '/') : null;
   const cover_path  = req.body.cover_path || null;
 
   const result = db.prepare(`
