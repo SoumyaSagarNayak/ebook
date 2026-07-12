@@ -93,6 +93,19 @@ function returnBook(req, res) {
     return res.status(403).json({ error: 'You can only return your own books.' });
   }
 
+  // Calculate dynamic fine at return time
+  const dueDate = new Date(record.due_date);
+  const returnedDate = new Date();
+  dueDate.setHours(0, 0, 0, 0);
+  returnedDate.setHours(0, 0, 0, 0);
+  const diffTime = returnedDate - dueDate;
+  const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+  const fine = diffDays > 0 ? diffDays * 5 : 0;
+
+  const fine_message = fine > 0
+    ? `Book returned. Overdue fine of ₹${fine} has been recorded.`
+    : 'Book returned successfully. Thank you!';
+
   const returnTransaction = db.transaction(() => {
     // Mark record as returned
     db.prepare(`
@@ -110,7 +123,7 @@ function returnBook(req, res) {
 
   returnTransaction();
 
-  res.json({ message: 'Book returned successfully. Thank you!' });
+  res.json({ message: fine_message, fine_message });
 }
 
 // ─────────────────────────────────────────
@@ -127,7 +140,18 @@ function getMyHistory(req, res) {
     ORDER BY br.borrowed_at DESC
   `).all(req.user.id);
 
-  res.json({ records });
+  const mapped = records.map(r => {
+    const dueDate = new Date(r.due_date);
+    const returnedDate = r.returned_at ? new Date(r.returned_at) : new Date();
+    dueDate.setHours(0, 0, 0, 0);
+    returnedDate.setHours(0, 0, 0, 0);
+    const diffTime = returnedDate - dueDate;
+    const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+    const fine_amount = diffDays > 0 ? diffDays * 5 : 0;
+    return { ...r, fine_amount };
+  });
+
+  res.json({ records: mapped });
 }
 
 // ─────────────────────────────────────────

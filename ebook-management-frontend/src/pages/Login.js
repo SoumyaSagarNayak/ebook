@@ -24,8 +24,8 @@ export default function Login() {
         <p>Sign in to your BookVault account</p>
         {error && <div className="alert alert-error">{error}</div>}
         <form onSubmit={handleSubmit}>
-          <div className="form-group"><label>Email</label>
-            <input type="email" placeholder="admin@ebook.com" required value={form.email} onChange={e => setForm({...form, email: e.target.value})} /></div>
+          <div className="form-group"><label>Email or Username</label>
+            <input type="text" placeholder="e.g., admin or admin@ebook.com" required value={form.email} onChange={e => setForm({...form, email: e.target.value})} /></div>
           <div className="form-group"><label>Password</label>
             <input type="password" placeholder="••••••••" required value={form.password} onChange={e => setForm({...form, password: e.target.value})} /></div>
           <button className="btn btn-primary" style={{width:'100%'}} disabled={loading}>

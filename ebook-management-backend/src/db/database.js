@@ -90,21 +90,17 @@ function initializeDatabase() {
   // ─────────────────────────────────────────
   const userCount = db.prepare('SELECT COUNT(*) as cnt FROM users').get();
   if (userCount.cnt === 0) {
-    const bcrypt = require('bcryptjs');
-
     // Create admin user (password: admin123)
-    const adminPassword = bcrypt.hashSync('admin123', 10);
     db.prepare(`
       INSERT INTO users (name, email, password, role)
-      VALUES ('Admin User', 'admin@ebook.com', ?, 'admin')
-    `).run(adminPassword);
+      VALUES ('Admin User', 'admin@ebook.com', 'admin123', 'admin')
+    `).run();
 
     // Create regular user (password: user123)
-    const userPassword = bcrypt.hashSync('user123', 10);
     db.prepare(`
       INSERT INTO users (name, email, password, role)
-      VALUES ('John Doe', 'john@example.com', ?, 'user')
-    `).run(userPassword);
+      VALUES ('John Doe', 'john@example.com', 'user123', 'user')
+    `).run();
 
     // Seed categories
     const categories = ['Fiction', 'Science', 'History', 'Technology', 'Self-Help', 'Biography'];
