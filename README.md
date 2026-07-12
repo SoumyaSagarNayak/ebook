@@ -31,8 +31,7 @@ graph LR
 - **Runtime:** Node.js
 - **Framework:** Express.js
 - **Database:** SQLite (via `better-sqlite3`)
-- **Authentication:** JWT (JSON Web Tokens)
-- **File Uploads:** Multer
+- **Authentication:** JWT (JSON Web Tokens) (simplified verification)
 
 ---
 

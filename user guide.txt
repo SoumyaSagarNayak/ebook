@@ -51,7 +51,7 @@ Demo Accounts:
 
 2. Admin Direct Read Access:
    --------------------------
-   Administrators do not need to borrow books. On any book details page, the "Borrow" button is replaced by a "Read Book (Admin Direct Access)" button. Clicking it provides instant reading access.
+   Administrators do not need to borrow books. On any book details page, the "Borrow" button is replaced by a "Read Book" button. Clicking it provides instant reading access without recording a borrow transaction.
 
 3. Global Borrowed Log ("Borrowed" Tab):
    ---------------------------------------
@@ -61,6 +61,14 @@ Demo Accounts:
    * Due date and overdue status.
    * Option to click "Return" to check the book back in on behalf of the user.
 
+4. No Image Uploads Required (Simplified JSON API):
+   ------------------------------------------------
+   Multer and image upload inputs have been completely removed. Admins can add and edit books instantly without uploading local file assets. New books default to beautiful, color-coded book cover placeholders.
+
+5. Hidden Profile Borrow Stats:
+   -----------------------------
+   The empty "Borrow Statistics" section is automatically hidden on the Profile dashboard for administrators since admins cannot borrow books.
+
 ========================================================================
 📖 MEMBER FEATURES
 ========================================================================
@@ -68,6 +76,7 @@ Demo Accounts:
 1. "My Books" Tab:
    ----------------
    Displays the member's personal borrow history, including due dates, active count, and estimated overdue fine calculations (₹5/day).
+
 2. Book Borrowing:
    ----------------
    Allows members to borrow active book copies for up to 14 days and return them.
