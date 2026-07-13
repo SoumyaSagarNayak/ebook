@@ -1,4 +1,4 @@
-# 📚 Full-Stack E-Book Management System
+# 📚 Full-Stack E-Book Management System:
 
 This project is a comprehensive, automated E-Book Management System built to facilitate library operations. It features a modern React frontend and a robust Node.js/Express backend with a local SQLite database.
 
